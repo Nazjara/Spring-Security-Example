@@ -25,7 +25,7 @@ public class BeerControllerIntegrationTest extends BaseIntegrationTest {
 
     @Test
     void findBeersWithHttpBasic() throws Exception{
-        mockMvc.perform(get("/beers/find").with(httpBasic("username", "password")))
+        mockMvc.perform(get("/beers/find").with(httpBasic("user1", "password1")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/findBeers"))
                 .andExpect(model().attributeExists("beer"));
