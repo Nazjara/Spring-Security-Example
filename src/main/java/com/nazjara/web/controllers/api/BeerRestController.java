@@ -1,4 +1,4 @@
-package com.nazjara.service.web.controllers.api;
+package com.nazjara.web.controllers.api;
 
 import com.nazjara.service.service.BeerService;
 import com.nazjara.service.web.model.BeerDto;

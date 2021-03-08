@@ -1,8 +1,9 @@
-package com.nazjara.service.web.controllers;
+package com.nazjara.web.controllers;
 
 import com.nazjara.service.domain.Customer;
 import com.nazjara.service.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +31,7 @@ public class CustomerController {
         return "customers/findCustomers";
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
     @GetMapping
     public String processFindFormReturnMany(Customer customer, BindingResult result, Model model){
         // find customers by name
@@ -50,7 +52,7 @@ public class CustomerController {
         }
     }
 
-   @GetMapping("/{customerId}")
+    @GetMapping("/{customerId}")
     public ModelAndView showCustomer(@PathVariable UUID customerId) {
         ModelAndView mav = new ModelAndView("customers/customerDetails");
         //ToDO: Add Service
@@ -64,6 +66,7 @@ public class CustomerController {
         return "customers/createCustomer";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/new")
     public String processCreationForm(Customer customer) {
         //ToDO: Add Service

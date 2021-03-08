@@ -1,4 +1,4 @@
-package com.nazjara.service.web.controllers;
+package com.nazjara.web.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -35,6 +35,6 @@ public class BeerControllerIntegrationTest extends BaseIntegrationTest {
     @Test
     void getFindBeersWithoutAuthentication() throws Exception{
         mockMvc.perform(get("/beers/find"))
-                .andExpect(status().isOk());
+                .andExpect(status().isUnauthorized());
     }
 }

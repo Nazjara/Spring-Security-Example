@@ -1,4 +1,4 @@
-package com.nazjara.service.web.controllers;
+package com.nazjara.web.controllers;
 
 import com.nazjara.service.domain.Beer;
 import com.nazjara.service.repository.BeerInventoryRepository;

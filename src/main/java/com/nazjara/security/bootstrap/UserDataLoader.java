@@ -30,15 +30,20 @@ public class UserDataLoader implements CommandLineRunner {
 
     private void loadAuthorityData() {
         var authority1 = Authority.builder()
-                .role("ADMIN")
+                .role("ROLE_ADMIN")
                 .build();
 
         var authority2 = Authority.builder()
-                .role("USER")
+                .role("ROLE_USER")
+                .build();
+
+        var authority3 = Authority.builder()
+                .role("ROLE_CUSTOMER")
                 .build();
 
         authorityRepository.save(authority1);
         authorityRepository.save(authority2);
+        authorityRepository.save(authority3);
     }
 
     private void loadUserData() {
@@ -54,7 +59,14 @@ public class UserDataLoader implements CommandLineRunner {
                 .authority(authorityRepository.getOne(2L))
                 .build();
 
+        var user3 = User.builder()
+                .username("user3")
+                .password(passwordEncoder.encode("password3"))
+                .authority(authorityRepository.getOne(3L))
+                .build();
+
         userRepository.save(user1);
         userRepository.save(user2);
+        userRepository.save(user3);
     }
 }
