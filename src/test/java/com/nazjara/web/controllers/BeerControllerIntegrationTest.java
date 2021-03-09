@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class BeerControllerIntegrationTest extends BaseIntegrationTest {
 
-    @WithMockUser
+    @WithMockUser(authorities = "beer.read")
     @Test
     void findBeers() throws Exception{
         mockMvc.perform(get("/beers/find"))

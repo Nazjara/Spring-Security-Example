@@ -1,8 +1,14 @@
 package com.nazjara.web.controllers;
 
+import com.nazjara.security.permissions.BeerCreatePermission;
+import com.nazjara.security.permissions.BeerReadPermission;
+import com.nazjara.security.permissions.BeerUpdatePermission;
 import com.nazjara.service.domain.Beer;
 import com.nazjara.service.repository.BeerInventoryRepository;
 import com.nazjara.service.repository.BeerRepository;
+import java.util.List;
+import java.util.UUID;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,10 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
-import java.util.List;
-import java.util.UUID;
-
 @RequiredArgsConstructor
 @RequestMapping("/beers")
 @Controller
@@ -29,12 +31,14 @@ public class BeerController {
     private final BeerInventoryRepository beerInventoryRepository;
 
 
+    @BeerReadPermission
     @RequestMapping("/find")
     public String findBeers(Model model) {
         model.addAttribute("beer", Beer.builder().build());
         return "beers/findBeers";
     }
 
+    @BeerReadPermission
     @GetMapping
     public String processFindFormReturnMany(Beer beer, BindingResult result, Model model) {
         // find beers by name
@@ -58,6 +62,7 @@ public class BeerController {
     }
 
 
+    @BeerReadPermission
     @GetMapping("/{beerId}")
     public ModelAndView showBeer(@PathVariable UUID beerId) {
         ModelAndView mav = new ModelAndView("beers/beerDetails");
@@ -72,6 +77,7 @@ public class BeerController {
         return "beers/createBeer";
     }
 
+    @BeerCreatePermission
     @PostMapping("/new")
     public String processCreationForm(Beer beer) {
         //ToDO: Add Service
@@ -95,6 +101,7 @@ public class BeerController {
         return "beers/createOrUpdateBeer";
     }
 
+    @BeerUpdatePermission
     @PostMapping("/{beerId}/edit")
     public String processUpdateForm(@Valid Beer beer, BindingResult result) {
         if (result.hasErrors()) {

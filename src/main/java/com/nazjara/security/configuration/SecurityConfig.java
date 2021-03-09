@@ -3,7 +3,6 @@ package com.nazjara.security.configuration;
 import com.nazjara.security.RestHeaderAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,12 +37,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.DELETE, "/api/v1/beer/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/brewery/breweries/**").hasAnyRole("ADMIN", "CUSTOMER")
-                .antMatchers(HttpMethod.GET, "/api/v1/breweries").hasAnyRole("ADMIN", "CUSTOMER")
-                .antMatchers("/beers/find", "/beers*").hasAnyRole("ADMIN", "USER", "CUSTOMER")
-                .antMatchers(HttpMethod.GET, "/api/v1/beer/**").hasAnyRole("ADMIN", "USER", "CUSTOMER")
-                .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").hasAnyRole("ADMIN", "USER", "CUSTOMER")
+//                .antMatchers(HttpMethod.DELETE, "/api/v1/beer/**").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET, "/brewery/breweries/**").hasAnyRole("ADMIN", "CUSTOMER")
+//                .antMatchers(HttpMethod.GET, "/api/v1/breweries").hasAnyRole("ADMIN", "CUSTOMER")
+//                .antMatchers("/beers/find", "/beers*").hasAnyRole("ADMIN", "USER", "CUSTOMER")
+//                .antMatchers(HttpMethod.GET, "/api/v1/beer/**").hasAnyRole("ADMIN", "USER", "CUSTOMER")
+//                .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").hasAnyRole("ADMIN", "USER", "CUSTOMER")
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/", "/webjars/**", "/resources/**").permitAll()
                 .anyRequest()

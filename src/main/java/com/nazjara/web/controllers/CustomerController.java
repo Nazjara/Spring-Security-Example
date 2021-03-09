@@ -1,9 +1,14 @@
 package com.nazjara.web.controllers;
 
+import com.nazjara.security.permissions.CustomerCreatePermission;
+import com.nazjara.security.permissions.CustomerReadPermission;
+import com.nazjara.security.permissions.CustomerUpdatePermission;
 import com.nazjara.service.domain.Customer;
 import com.nazjara.service.repository.CustomerRepository;
+import java.util.List;
+import java.util.UUID;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,10 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @RequestMapping("/customers")
@@ -31,7 +32,7 @@ public class CustomerController {
         return "customers/findCustomers";
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'CUSTOMER')")
+    @CustomerReadPermission
     @GetMapping
     public String processFindFormReturnMany(Customer customer, BindingResult result, Model model){
         // find customers by name
@@ -52,6 +53,7 @@ public class CustomerController {
         }
     }
 
+    @CustomerReadPermission
     @GetMapping("/{customerId}")
     public ModelAndView showCustomer(@PathVariable UUID customerId) {
         ModelAndView mav = new ModelAndView("customers/customerDetails");
@@ -66,7 +68,7 @@ public class CustomerController {
         return "customers/createCustomer";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @CustomerCreatePermission
     @PostMapping("/new")
     public String processCreationForm(Customer customer) {
         //ToDO: Add Service
@@ -79,12 +81,13 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}/edit")
-   public String initUpdateCustomerForm(@PathVariable UUID customerId, Model model) {
+    public String initUpdateCustomerForm(@PathVariable UUID customerId, Model model) {
        if(customerRepository.findById(customerId).isPresent())
           model.addAttribute("customer", customerRepository.findById(customerId).get());
        return "customers/createOrUpdateCustomer";
-   }
+    }
 
+    @CustomerUpdatePermission
     @PostMapping("/{beerId}/edit")
     public String processUpdationForm(@Valid Customer customer, BindingResult result) {
         if (result.hasErrors()) {
