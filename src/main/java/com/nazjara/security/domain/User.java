@@ -1,5 +1,6 @@
 package com.nazjara.security.domain;
 
+import com.nazjara.service.domain.Customer;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
@@ -11,13 +12,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.Transient;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Singular;
+import org.springframework.security.core.CredentialsContainer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @NoArgsConstructor
@@ -25,7 +30,7 @@ import lombok.Singular;
 @Getter
 @Setter
 @Builder
-public class User {
+public class User implements UserDetails, CredentialsContainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,13 +46,14 @@ public class User {
     @Singular
     private Set<Role> roles;
 
-    @Transient
-    private Set<Authority> authorities;
+    @ManyToOne
+    private Customer customer;
 
-    public Set<Authority> getAuthorities() {
+    public Set<GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(Role::getAuthorities)
                 .flatMap(Set::stream)
+                .map(authority -> new SimpleGrantedAuthority(authority.getPermission()))
                 .collect(Collectors.toSet());
     }
 
@@ -62,4 +68,9 @@ public class User {
 
     @Builder.Default
     private boolean enabled = true;
+
+    @Override
+    public void eraseCredentials() {
+        password = null;
+    }
 }

@@ -65,6 +65,30 @@ public class UserDataLoader implements CommandLineRunner {
         var authority12 = authorityRepository.save(Authority.builder()
                 .permission("brewery.update")
                 .build());
+        var authority13 = authorityRepository.save(Authority.builder()
+                .permission("order.create")
+                .build());
+        var authority14 = authorityRepository.save(Authority.builder()
+                .permission("order.delete")
+                .build());
+        var authority15 = authorityRepository.save(Authority.builder()
+                .permission("order.read")
+                .build());
+        var authority16 = authorityRepository.save(Authority.builder()
+                .permission("order.update")
+                .build());
+        var authority17 = authorityRepository.save(Authority.builder()
+                .permission("customer.order.create")
+                .build());
+        var authority18 = authorityRepository.save(Authority.builder()
+                .permission("customer.order.delete")
+                .build());
+        var authority19 = authorityRepository.save(Authority.builder()
+                .permission("customer.order.read")
+                .build());
+        var authority20 = authorityRepository.save(Authority.builder()
+                .permission("customer.order.update")
+                .build());
 
         var role1 = roleRepository.save(Role.builder()
                 .name("ADMIN")
@@ -77,9 +101,13 @@ public class UserDataLoader implements CommandLineRunner {
                 .build());
         
         role1.setAuthorities(Set.of(authority1, authority2, authority3, authority4, authority5, authority6, authority7,
-                        authority8, authority9, authority10, authority11, authority12));
+                        authority8, authority9, authority10, authority11, authority12, authority13, authority14, authority15,
+                authority16));
+
         role2.setAuthorities(Set.of(authority3));
-        role3.setAuthorities(Set.of(authority3, authority7, authority11));
+
+        role3.setAuthorities(Set.of(authority3, authority7, authority11, authority17, authority18, authority19,
+                authority20));
 
         roleRepository.saveAll(Set.of(role1, role2, role3));
 

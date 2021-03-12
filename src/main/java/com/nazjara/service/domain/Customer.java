@@ -1,5 +1,8 @@
 package com.nazjara.service.domain;
 
+import com.nazjara.security.domain.User;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +31,9 @@ public class Customer extends BaseEntity {
     }
 
     private String customerName;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<User> users;
 
     @Column(length = 36, columnDefinition = "varchar")
     private UUID apiKey;
