@@ -5,6 +5,7 @@ import com.nazjara.service.repository.*;
 import com.nazjara.service.web.model.BeerStyleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component
+@Order(1)
 public class DefaultBreweryLoader implements CommandLineRunner {
 
     public static final String TASTING_ROOM = "Tasting Room";
