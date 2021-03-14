@@ -54,7 +54,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/webjars/**", "/resources/**").permitAll()
                 .anyRequest()
                 .authenticated().and()
-                .formLogin().and()
+                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
+                        .loginProcessingUrl("/login")
+                        .loginPage("/")
+                        .permitAll()
+                        .successForwardUrl("/")
+                        .failureUrl("/?error")
+                        .defaultSuccessUrl("/"))
+                .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                        .logoutSuccessUrl("/?logout")
+                        .permitAll())
                 .httpBasic();
 
         //h2 console config
