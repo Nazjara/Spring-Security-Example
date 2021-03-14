@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.test.annotation.Rollback;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,6 +51,7 @@ public class CustomerControllerIntegrationTest extends BaseIntegrationTest {
         void processCreationForm() throws Exception{
             mockMvc.perform(post("/customers/new")
                     .param("customerName", "Foo Customer")
+                    .with(csrf())
                     .with(httpBasic("user1", "password1")))
                     .andExpect(status().is3xxRedirection());
         }
@@ -67,7 +69,8 @@ public class CustomerControllerIntegrationTest extends BaseIntegrationTest {
         @Test
         void processCreationFormNOAUTH() throws Exception{
             mockMvc.perform(post("/customers/new")
-                    .param("customerName", "Foo Customer"))
+                    .param("customerName", "Foo Customer")
+                    .with(csrf()))
                     .andExpect(status().isUnauthorized());
         }
     }
