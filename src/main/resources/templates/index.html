@@ -11,7 +11,8 @@
 
 <div sec:authorize="!isAuthenticated()" class="row"> <!-- show login page if user is not authenticated -->
     <div class="col-md-12">
-        <div th:if="${param.error}" class="alert alert-danger">Invalid username or password</div>
+        <div th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']?.message} == 'Bad credentials'" class="alert alert-danger">Invalid username or password</div>
+        <div th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']?.message} == 'User account is locked'" class="alert alert-danger">User account is locked</div>
         <div th:if="${param.logout}" class="alert alert-success">You have logged out</div>
         <form th:action="@{/login}" method="post">
             <label for="username">Username:</label>

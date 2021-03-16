@@ -1,15 +1,32 @@
 package com.nazjara.security.domain;
 
 import com.nazjara.service.domain.Customer;
-import lombok.*;
+import java.sql.Timestamp;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Singular;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.*;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor
@@ -36,6 +53,13 @@ public class User implements UserDetails, CredentialsContainer {
     @ManyToOne
     private Customer customer;
 
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Timestamp createdDate;
+
+    @UpdateTimestamp
+    private Timestamp lastModifiedDate;
+
     public Set<GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(Role::getAuthorities)
@@ -55,6 +79,7 @@ public class User implements UserDetails, CredentialsContainer {
 
     @Builder.Default
     private boolean enabled = true;
+
 
     @Override
     public void eraseCredentials() {
