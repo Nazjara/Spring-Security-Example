@@ -1,32 +1,18 @@
 package com.nazjara.security.domain;
 
 import com.nazjara.service.domain.Customer;
-import java.sql.Timestamp;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.Singular;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor
@@ -80,6 +66,14 @@ public class User implements UserDetails, CredentialsContainer {
     @Builder.Default
     private boolean enabled = true;
 
+    @Builder.Default
+    private Boolean useGoogle2fa = false;
+
+    private String google2faSecret;
+
+    @Transient
+    @Builder.Default
+    private Boolean google2faRequired = true;
 
     @Override
     public void eraseCredentials() {
