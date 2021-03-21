@@ -50,6 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(google2faFilter, SessionManagementFilter.class);
 
+        http.cors();
+
         http
                 .addFilterBefore(restHeaderAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().ignoringAntMatchers("/h2-console/**", "/api/**").and()
